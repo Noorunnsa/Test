@@ -52,7 +52,7 @@ pipeline {
         stage('Build with Maven') {
             steps {
                 script {
-                    dir('/var/jenkins_home/workspace/CI-Pipeline/single-module') {
+                    dir('/var/jenkins_home/workspace/ci_cd_stack/single-module') {
                         sh 'mvn clean install'
                     }
                }
