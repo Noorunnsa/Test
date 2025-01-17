@@ -65,7 +65,7 @@ pipeline {
                     // The repository URL and credentials are provided dynamically
                     sh """
                         mvn deploy:deploy-file \
-                            -Dfile=single-module-project.jar \
+                            -Dfile=target/single-module-project.jar \
                             -DartifactId=single-module-project \
                             -Dversion=1.0.0 \
                             -Dpackaging=jar \
