@@ -7,7 +7,7 @@ pipeline {
         SONARQUBE_AUTH_TOKEN = credentials('sonar-token')
         NEXUS_URL = 'http://13.203.16.254:8081/repository/Nexus-Repo-1'
         NEXUS_REPO = 'Nexus-Repo-1'
-        NEXUS_CREDENTIALS = 'nexus-credentials'  // Define this credential in Jenkins
+        NEXUS_CREDENTIALS = credentials('nexus-credentials')  // Define this credential in Jenkins
     }
     stages {
         stage('Code Checkout') {
@@ -58,18 +58,25 @@ pipeline {
                }
             }   
         }
-         stage('Upload Artifact to Nexus') {
+         stage('Deploy to Nexus') {
             steps {
-                nexusArtifactUploader(
-                    nexusUrl: "${NEXUS_URL}",
-                    repository: "${NEXUS_REPO}",
-                    credentialsId: "${NEXUS_CREDENTIALS}",
-                    artifactId: 'single-module-project',
-                    version: '1.0.0',
-                    file: 'target/single-module-project.jar',
-                    type: 'jar'
-                )
+                script {
+                    // Deploy the artifact to Nexus using the mvn deploy command
+                    // The repository URL and credentials are provided dynamically
+                    sh """
+                        mvn deploy:deploy-file \
+                            -Dfile=single-module-project.jar \  # Path to your artifact
+                            -DartifactId=single-module-project \        # Your artifact's ID
+                            -Dversion=1.0.0 \                 # Your artifact's version
+                            -Dpackaging=jar \                 # Packaging type (e.g., jar, war)
+                            -DrepositoryId=${NEXUS_REPO} \ # The repository ID (this can be anything)
+                            -Durl=${NEXUS_URL} \         # Nexus repository URL
+                            -Dusername=${NEXUS_CREDENTIALS_USR} \   # Nexus username from Jenkins credentials
+                            -Dpassword=${NEXUS_CREDENTIALS_PSW}
+                    """
+                }
             }
         }
+    }
     }
 }
