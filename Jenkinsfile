@@ -70,6 +70,8 @@ pipeline {
                             -Dpackaging=jar \
                             -DrepositoryId=${NEXUS_REPO} \
                             -Durl=${NEXUS_URL} \
+                            -Dusername=\${NEXUS_CREDENTIALS_USR} \
+                            -Dpassword=\${NEXUS_CREDENTIALS_PSW}
                     """
                 }
             }
