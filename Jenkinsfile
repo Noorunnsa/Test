@@ -19,7 +19,7 @@ pipeline {
                         $class: 'GitSCM', 
                         branches: [[name: 'main']], 
                         doGenerateSubmoduleConfigurations: false, 
-                        extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: '/var/jenkins_home/workspace/CI-Pipeline/']], 
+                        extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: '/var/jenkins_home/workspace/ci_cd_stack/']], 
                         submoduleCfg: [], 
                         userRemoteConfigs: [[credentialsId: GIT_CRED, url: GIT_REPO]]
                     ])
@@ -79,3 +79,4 @@ pipeline {
         }
     }
     }
+}
