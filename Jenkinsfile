@@ -61,7 +61,6 @@ pipeline {
          stage('Deploy to Nexus') {
             steps {
                 script {
-                   withCredentials([usernamePassword(credentialsId: 'nexus-credentials')]) {
                     sh """
                         mvn deploy:deploy-file \
                             -Dfile=single-module/target/single-module-project.jar \
@@ -72,7 +71,7 @@ pipeline {
                             -DrepositoryId=${NEXUS_REPO} \
                             -Durl=${NEXUS_URL} \
                     """
-                }}
+                }
             }
         }
     }
