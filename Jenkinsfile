@@ -65,13 +65,13 @@ pipeline {
                     // The repository URL and credentials are provided dynamically
                     sh """
                         mvn deploy:deploy-file \
-                            -Dfile=single-module-project.jar \  # Path to your artifact
-                            -DartifactId=single-module-project \        # Your artifact's ID
-                            -Dversion=1.0.0 \                 # Your artifact's version
-                            -Dpackaging=jar \                 # Packaging type (e.g., jar, war)
-                            -DrepositoryId=${NEXUS_REPO} \ # The repository ID (this can be anything)
-                            -Durl=${NEXUS_URL} \         # Nexus repository URL
-                            -Dusername=${NEXUS_CREDENTIALS_USR} \   # Nexus username from Jenkins credentials
+                            -Dfile=single-module-project.jar \
+                            -DartifactId=single-module-project \
+                            -Dversion=1.0.0 \
+                            -Dpackaging=jar \
+                            -DrepositoryId=${NEXUS_REPO} \
+                            -Durl=${NEXUS_URL} \
+                            -Dusername=${NEXUS_CREDENTIALS_USR}\
                             -Dpassword=${NEXUS_CREDENTIALS_PSW}
                     """
                 }
