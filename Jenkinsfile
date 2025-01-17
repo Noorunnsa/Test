@@ -64,7 +64,6 @@ pipeline {
                     nexusUrl: "${NEXUS_URL}",
                     repository: "${NEXUS_REPO}",
                     credentialsId: "${NEXUS_CREDENTIALS}",
-                    #groupId: 'com.yourcompany',
                     artifactId: 'single-module-project',
                     version: '1.0.0',
                     file: 'target/single-module-project.jar',
