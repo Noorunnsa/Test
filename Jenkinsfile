@@ -61,10 +61,7 @@ pipeline {
          stage('Deploy to Nexus') {
             steps {
                 script {
-                    echo "Using Nexus username: ${NEXUS_CREDENTIALS_USR}"
-                    echo "Using Nexus password: ${NEXUS_CREDENTIALS_PSW}"
-                    // Deploy the artifact to Nexus using the mvn deploy command
-                    // The repository URL and credentials are provided dynamically
+                   withCredentials([usernamePassword(credentialsId: 'nexus-credentials-id', usernameVariable: 'NEXUS_USERNAME', passwordVariable: 'NEXUS_PASSWORD')]) {
                     sh """
                         mvn deploy:deploy-file \
                             -Dfile=single-module/target/single-module-project.jar \
@@ -78,7 +75,7 @@ pipeline {
                             -Dpassword=${NEXUS_CREDENTIALS_PSW} \
                             -X
                     """
-                }
+                }}
             }
         }
     }
