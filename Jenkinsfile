@@ -67,7 +67,7 @@ pipeline {
                             -Dfile=single-module/target/single-module-project.jar \
                             -DartifactId=single-module-project \
                             -Dversion=1.0.0 \
-                            -DgroupId=com.example \
+                            -DgroupId=com.example.maven-samples \
                             -Dpackaging=jar \
                             -DrepositoryId=${NEXUS_REPO} \
                             -Durl=${NEXUS_URL} \
