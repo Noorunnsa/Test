@@ -5,7 +5,7 @@ pipeline {
     }
     environment {
         SONARQUBE_AUTH_TOKEN = credentials('sonar-token')
-        NEXUS_URL = 'http://13.203.16.254:8081/repository/Maven-Artifacts-Repo'
+        NEXUS_URL = 'http://13.203.16.254:8081/repository/Maven-Artifacts-Repo/'
         NEXUS_REPO = 'Maven-Artifacts-Repo'
         NEXUS_CREDENTIALS = 'nexus-credentials' // Define this credential in Jenkins
     }
