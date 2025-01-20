@@ -70,6 +70,7 @@ pipeline {
                             -DgroupId=com.example.maven-samples \
                             -Dpackaging=jar \
                             -Durl=${NEXUS_URL} \
+                            -DrepositoryId=${NEXUS_REPO} \
                             -Dusername=${NEXUS_USERNAME} \
                             -Dpassword=${NEXUS_PASSWORD}
                     """
