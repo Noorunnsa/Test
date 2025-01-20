@@ -69,7 +69,6 @@ pipeline {
                             -Dversion=1.0.0 \
                             -DgroupId=com.example.maven-samples \
                             -Dpackaging=jar \
-                            -DrepositoryId=${NEXUS_REPO} \
                             -Durl=${NEXUS_URL} \
                             -Dusername=${NEXUS_USERNAME} \
                             -Dpassword=${NEXUS_PASSWORD}
