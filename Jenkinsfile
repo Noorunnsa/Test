@@ -58,23 +58,12 @@ pipeline {
                }
             }   
         }
-         stage('Deploy to Nexus') {
+         
+        stage('Publish Artifacts to Nexus') {
             steps {
-                script {
-                  withCredentials([usernamePassword(credentialsId: 'nexus-credentials', usernameVariable: 'NEXUS_USERNAME', passwordVariable: 'NEXUS_PASSWORD')]) {
-                    sh """
-                        mvn -X deploy:deploy-file \
-                            -Dfile=single-module/target/single-module-project.jar \
-                            -DartifactId=single-module-project \
-                            -Dversion=1.0.0 \
-                            -DgroupId=com.example.maven-samples \
-                            -Dpackaging=jar \
-                            -Durl=${NEXUS_URL} \
-                            -DrepositoryId=${NEXUS_REPO} \
-                            -Dusername=${NEXUS_USERNAME} \
-                            -Dpassword=${NEXUS_PASSWORD}
-                    """
-                }}
+                withMaven(globalMavenSettingsConfig: 'global-settings', jdk: 'jdk17', maven: 'maven3.9.9', mavenSettingsConfig: '', traceability: true) {
+                    sh "mvn deploy"
+                }
             }
         }
     }
