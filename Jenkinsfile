@@ -5,9 +5,13 @@ pipeline {
     }
     environment {
         SONARQUBE_AUTH_TOKEN = credentials('sonar-token')
-        NEXUS_URL = 'http://13.203.16.254:8081/repository/Maven-Artifacts-Repo/'
-        NEXUS_REPO = 'Maven-Artifacts-Repo'
-        NEXUS_CREDENTIALS = 'nexus-credentials' // Define this credential in Jenkins
+        NEXUS_VERSION = "nexus3"
+        NEXUS_PROTOCOL = "http"
+        NEXUS_URL = "13.203.16.254:8081"
+        NEXUS_REPOSITORY = "Maven-Artifacts-Repo"
+	    NEXUS_REPO_ID    = "Maven-Artifacts-Repo"
+        NEXUS_CREDENTIAL_ID = "nexus-credentials"
+        ARTVERSION = "${env.BUILD_ID}"
     }
     stages {
         stage('Code Checkout') {
@@ -58,24 +62,40 @@ pipeline {
                }
             }   
         }
-         stage('Deploy to Nexus') {
+       stage("Publish to Nexus Repository Manager") {
             steps {
                 script {
-                  withCredentials([usernamePassword(credentialsId: 'nexus-credentials', usernameVariable: 'NEXUS_USERNAME', passwordVariable: 'NEXUS_PASSWORD')]) {
-                   dir('/var/jenkins_home/workspace/ci_cd_stack/single-module/') {
-                        sh """
-                        mvn -X deploy:deploy-file \
-                            -Dfile=target/single-module-project.jar \
-                            -DartifactId=single-module-project \
-                            -Dversion=1.0.0 \
-                            -DgroupId=com.example.maven-samples \
-                            -Dpackaging=jar \
-                            -Durl=${NEXUS_URL} \
-                            -DrepositoryId=${NEXUS_REPO} \
-                            -Dusername=${NEXUS_USERNAME} \
-                            -Dpassword=${NEXUS_PASSWORD}
-                    """
-                }}}
+                    pom = readMavenPom file: "pom.xml";
+                    filesByGlob = findFiles(glob: "target/*.${pom.packaging}");
+                    echo "${filesByGlob[0].name} ${filesByGlob[0].path} ${filesByGlob[0].directory} ${filesByGlob[0].length} ${filesByGlob[0].lastModified}"
+                    artifactPath = filesByGlob[0].path;
+                    artifactExists = fileExists artifactPath;
+                    if(artifactExists) {
+                        echo "*** File: ${artifactPath}, group: ${pom.groupId}, packaging: ${pom.packaging}, version ${pom.version} ARTVERSION";
+                        nexusArtifactUploader(
+                            nexusVersion: NEXUS_VERSION,
+                            protocol: NEXUS_PROTOCOL,
+                            nexusUrl: NEXUS_URL,
+                            groupId: pom.groupId,
+                            version: ARTVERSION,
+                            repository: NEXUS_REPOSITORY,
+                            credentialsId: NEXUS_CREDENTIAL_ID,
+                            artifacts: [
+                                [artifactId: pom.artifactId,
+                                classifier: '',
+                                file: artifactPath,
+                                type: pom.packaging],
+                                [artifactId: pom.artifactId,
+                                classifier: '',
+                                file: "pom.xml",
+                                type: "pom"]
+                            ]
+                        );
+                    } 
+		    else {
+                        error "*** File: ${artifactPath}, could not be found";
+                    }
+                }
             }
         }
     }
