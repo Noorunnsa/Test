@@ -64,7 +64,7 @@ pipeline {
 	    post {
                 success {
                     echo 'Now Archiving...'
-                    archiveArtifacts artifacts: 'single-module/target/*.war', allowEmptyArchive: true
+                    archiveArtifacts artifacts: 'single-module/target/*.jar', allowEmptyArchive: true
                 }
             }
         }
