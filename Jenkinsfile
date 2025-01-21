@@ -9,7 +9,7 @@ pipeline {
         SHARED_VOLUME_PATH = "/var/jenkins_home"
         NEXUS_PROTOCOL = "http"
         NEXUS_URL = "13.203.16.254:8081"
-	    NEXUS_REPO_ID    = "Maven-Artifacts-Repo"
+	NEXUS_REPO_ID    = "Maven-Artifacts-Repo"
         GROUP_ID = "com.example.maven-samples"
         NEXUS_CREDENTIAL_ID = "nexus-credentials"
     }
@@ -88,5 +88,5 @@ pipeline {
                 }
             }
         }
-        }
     }
+}
