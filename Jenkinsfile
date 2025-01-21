@@ -83,8 +83,8 @@ pipeline {
 
                     // Download the JAR file using curl
                     sh(script: """
-                        curl -u admin:NeoHoney@25 -L -o single-module-project.jar ${downloadUrl}
-                    """)
+                       curl -u admin:NeoHoney@25 -L -o ${env.WORKSPACE}/single-module-project-${env.BUILD_ID}.jar ${downloadUrl}                  
+		    """)
                 }
             }
         }
