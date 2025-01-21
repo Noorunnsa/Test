@@ -10,7 +10,6 @@ pipeline {
         NEXUS_URL = "13.203.16.254:8081"
 	NEXUS_REPO_ID    = "Maven-Artifacts-Repo"
         NEXUS_CREDENTIAL_ID = "nexus-credentials"
-        ARTVERSION = "${env.BUILD_ID}"
     }
     stages {
         stage('Code Checkout') {
@@ -64,9 +63,9 @@ pipeline {
        stage("Publish to Nexus Repository Manager") {
             steps {
               nexusArtifactUploader(
-                   nexusVersion: 'nexus3',
-                   protocol: 'http',
-                   nexusUrl: '13.203.16.254:8081',
+                   nexusVersion: "${NEXUS_VERSION}",
+                   protocol: "${NEXUS_PROTOCOL}",
+                   nexusUrl: "${NEXUS_URL}",
                    groupId: 'com.example.maven-samples',
                    repository: "${NEXUS_REPO_ID}",
 		   version: "${env.BUILD_ID}",
