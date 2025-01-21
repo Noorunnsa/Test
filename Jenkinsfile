@@ -6,9 +6,11 @@ pipeline {
     environment {
         SONARQUBE_AUTH_TOKEN = credentials('sonar-token')
         NEXUS_VERSION = "nexus3"
+        SHARED_VOLUME_PATH = "/var/jenkins_home"
         NEXUS_PROTOCOL = "http"
         NEXUS_URL = "13.203.16.254:8081"
-	NEXUS_REPO_ID    = "Maven-Artifacts-Repo"
+	    NEXUS_REPO_ID    = "Maven-Artifacts-Repo"
+        GROUP_ID = "com.example.maven-samples"
         NEXUS_CREDENTIAL_ID = "nexus-credentials"
     }
     stages {
@@ -66,12 +68,25 @@ pipeline {
                    nexusVersion: "${NEXUS_VERSION}",
                    protocol: "${NEXUS_PROTOCOL}",
                    nexusUrl: "${NEXUS_URL}",
-                   groupId: 'com.example.maven-samples',
+                   groupId: "${GROUP_ID}",
                    repository: "${NEXUS_REPO_ID}",
-		   version: "${env.BUILD_ID}",
+		           version: "${env.BUILD_ID}",
                    credentialsId: "${NEXUS_CREDENTIAL_ID}",
                    artifacts: [ [artifactId: 'single-module-project', classifier: '', file: "single-module/target/single-module-project.jar",  type: 'jar'] ])  
+                }
+            }
+            stage('Download Artifact from Nexus') {
+            steps {
+                script {
+                    // Construct the URL to download the same version from Nexus
+                    def downloadUrl = "${env.NEXUS_URL}/${env.GROUP_ID.replace('.', '/')}/single-module-project/${env.BUILD_ID}/single-module-project.jar"
+
+                    // Download the JAR file using curl
+                    sh(script: """
+                        curl -u admin:NeoHoney@25 -L -o single-module-project.jar ${downloadUrl}
+                    """)
+                }
+            }
+        }
         }
     }
-}
-}
