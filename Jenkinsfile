@@ -63,7 +63,7 @@ pipeline {
                 script {
                   withCredentials([usernamePassword(credentialsId: 'nexus-credentials', usernameVariable: 'NEXUS_USERNAME', passwordVariable: 'NEXUS_PASSWORD')]) {
                     sh """
-                        mvn deploy:deploy-file \
+                        mvn -X deploy:deploy-file \
                             -Dfile=single-module/target/single-module-project.jar \
                             -DartifactId=single-module-project \
                             -Dversion=1.0.0 \
