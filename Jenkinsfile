@@ -62,9 +62,10 @@ pipeline {
             steps {
                 script {
                   withCredentials([usernamePassword(credentialsId: 'nexus-credentials', usernameVariable: 'NEXUS_USERNAME', passwordVariable: 'NEXUS_PASSWORD')]) {
-                    sh """
-                        mvn  deploy:deploy-file \
-                            -Dfile=single-module/target/single-module-project.jar \
+                   dir('/var/jenkins_home/workspace/ci_cd_stack/single-module/') {
+                        sh """
+                        mvn -X deploy:deploy-file \
+                            -Dfile=target/single-module-project.jar \
                             -DartifactId=single-module-project \
                             -Dversion=1.0.0 \
                             -DgroupId=com.example.maven-samples \
@@ -74,7 +75,7 @@ pipeline {
                             -Dusername=${NEXUS_USERNAME} \
                             -Dpassword=${NEXUS_PASSWORD}
                     """
-                }}
+                }}}
             }
         }
     }
