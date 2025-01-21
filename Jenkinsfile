@@ -8,7 +8,6 @@ pipeline {
         NEXUS_VERSION = "nexus3"
         NEXUS_PROTOCOL = "http"
         NEXUS_URL = "13.203.16.254:8081"
-        NEXUS_REPOSITORY = "Maven-Artifacts-Repo"
 	NEXUS_REPO_ID    = "Maven-Artifacts-Repo"
         NEXUS_CREDENTIAL_ID = "nexus-credentials"
         ARTVERSION = "${env.BUILD_ID}"
@@ -69,9 +68,9 @@ pipeline {
                    protocol: 'http',
                    nexusUrl: '13.203.16.254:8081',
                    groupId: 'com.example.maven-samples',
-                   repository: 'Maven-Artifacts-Repo',
+                   repository: "${NEXUS_REPO_ID}",
 		   version: "${env.BUILD_ID}",
-                   credentialsId: 'nexus-credentials',
+                   credentialsId: "${NEXUS_CREDENTIAL_ID}",
                    artifacts: [ [artifactId: 'single-module-project', classifier: '', file: "single-module/target/single-module-project.jar",  type: 'jar'] ])  
         }
     }
