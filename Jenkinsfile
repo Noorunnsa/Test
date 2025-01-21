@@ -70,9 +70,9 @@ pipeline {
                    nexusUrl: '13.203.16.254:8081',
                    groupId: 'com.example.maven-samples',
                    version: "${env.BUILD_ID}",
-                   repository: 'Maven-Artifact-Repo',
+                   repository: 'Maven-Artifacts-Repo',
                    credentialsId: 'nexus-credentials',
-                   artifacts: [ [artifactId: single-module-project, classifier: '', file: 'single-module/target/single-module-project.jar' + version + '.jar', type: 'jar'] ])  
+                   artifacts: [ [artifactId: 'single-module-project', classifier: '', file: "single-module/target/single-module-project-${env.BUILD_ID}.jar",  type: 'jar'] ])  
         }
     }
 }
