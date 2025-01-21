@@ -61,12 +61,6 @@ pipeline {
                     }
                }
             } 
-	    post {
-                success {
-                    echo 'Now Archiving...'
-                    archiveArtifacts artifacts: 'single-module/target/*.jar', allowEmptyArchive: true
-                }
-            }
         }
        stage("Publish to Nexus Repository Manager") {
             steps {
