@@ -14,7 +14,7 @@ pipeline {
             steps {
                 script {
                     def GIT_CRED = 'gitlab-access-token'
-                    def GIT_REPO = 'https://gitlab.com/lg332802/test_maven_build.git'
+                    def GIT_REPO = 'https://gitlab.com/lg332802/LGDOP.git'
                     checkout([
                         $class: 'GitSCM', 
                         branches: [[name: 'main']], 
@@ -52,7 +52,7 @@ pipeline {
         stage('Build with Maven') {
             steps {
                 script {
-                    dir('/var/jenkins_home/workspace/ci_cd_stack/') {
+                    dir('/var/jenkins_home/workspace/ci_cd_stack/single-module/') {
                         sh 'mvn clean install'
                     }
                }
