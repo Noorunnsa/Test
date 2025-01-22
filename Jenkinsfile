@@ -70,21 +70,21 @@ pipeline {
                    nexusUrl: "${NEXUS_URL}",
                    groupId: "${GROUP_ID}",
                    repository: "${NEXUS_REPO_ID}",
-		           version: "${env.BUILD_ID}",
+	           version: "${env.BUILD_ID}",
                    credentialsId: "${NEXUS_CREDENTIAL_ID}",
-                   artifacts: [ [artifactId: 'single-module-project', classifier: '', file: "single-module/target/single-module-project.jar",  type: 'jar'] ])  
+                   artifacts: [ [artifactId: 'single-module-project', classifier: '', file: "single-module/target/single-module-project.war",  type: 'war'] ])  
                 }
             }
             stage('Download Artifact from Nexus') {
             steps {
                 script {
                     // Construct the URL to download the same version from Nexus
-                    def downloadUrl = "${env.NEXUS_URL}/${env.GROUP_ID.replace('.', '/')}/single-module-project/${env.BUILD_ID}/single-module-project.jar"
+                    def downloadUrl = "${env.NEXUS_URL}/${env.GROUP_ID.replace('.', '/')}/single-module-project/${env.BUILD_ID}/single-module-project.war"
 
-                    // Download the JAR file using curl
+                    // Download the WAR file using curl
                     sh(script: """
-                          curl -u admin:NeoHoney@25 -L -o ${env.WORKSPACE}/single-module-project-${env.BUILD_ID}.jar ${downloadUrl}  
-		       cp ${env.WORKSPACE}/single-module-project-${env.BUILD_ID}.jar "${SHARED_VOLUME_PATH}"
+                          curl -u admin:NeoHoney@25 -L -o ${env.WORKSPACE}/single-module-project-${env.BUILD_ID}.war ${downloadUrl}  
+		       cp ${env.WORKSPACE}/single-module-project-${env.BUILD_ID}.war "${SHARED_VOLUME_PATH}"
 			  """)
                 }
             }
