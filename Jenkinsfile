@@ -77,17 +77,19 @@ pipeline {
             }
             stage('Download Artifact from Nexus') {
             steps {
+	       withCredentials([usernamePassword(credentialsId: 'nexus-credentials', passwordVariable: 'NEXUS_PASSWORD', usernameVariable: 'NEXUS_USERNAME')]) {
                 script {
                     // Construct the URL to download the same version from Nexus
                     def downloadUrl = "${env.NEXUS_URL}/${env.GROUP_ID.replace('.', '/')}/single-module-project/${env.BUILD_ID}/single-module-project.jar"
 
                     // Download the JAR file using curl
                     sh(script: """
-                          curl -u admin:NeoHoney@25 -L -o ${env.WORKSPACE}/single-module-project-${env.BUILD_ID}.jar ${downloadUrl}  
+                          curl -u ${NEXUS_USERNAME}:${NEXUS_PASSWORD} -L -o ${env.WORKSPACE}/single-module-project-${env.BUILD_ID}.jar ${downloadUrl}  
 		       cp ${env.WORKSPACE}/single-module-project-${env.BUILD_ID}.jar "${SHARED_VOLUME_PATH}"
 			  """)
                 }
             }
+	  }
         }
 	stage('Deploy to the server') {
           steps {
