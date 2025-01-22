@@ -89,11 +89,11 @@ pipeline {
                 }
             }
         }
-	stage('Deploy to Tomcat') {
+	stage('Deploy to the server') {
           steps {
             script {
-            // Tomcat will automatically deploy the WAR file once it is placed in the shared volume
-            echo "Artifact placed in shared volume. Tomcat will deploy it automatically."
+            // The server will automatically deploy the WAR file once it is placed in the shared volume
+            echo "Artifact placed in shared volume. The server will deploy it automatically."
            }
         }
       }
